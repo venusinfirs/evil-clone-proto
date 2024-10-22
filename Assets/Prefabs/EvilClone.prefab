@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 8410793510381221212}
   - component: {fileID: 8852804026377994896}
   - component: {fileID: 2831987686956853355}
-  - component: {fileID: 6376917542838810917}
+  - component: {fileID: 8523651203581336959}
   m_Layer: 0
   m_Name: EvilClone
   m_TagString: Untagged
@@ -204,7 +204,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6376917542838810917
+--- !u!114 &8523651203581336959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6947435234587154883}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2d690ca013a7cf489556c2a68f16aa6, type: 3}
+  m_Script: {fileID: 11500000, guid: 45aceb50a3b34332b02e1f02f6570b80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
