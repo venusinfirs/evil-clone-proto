@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Zenject;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,24 +13,32 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rBody;
     private bool _isGrounded;
 
-    private const string HorizontalAxisName = "Horizontal";
-    private const string JumpKeyName = "Jump";
+    [Inject] private InputHandler _inputHandler; 
 
-    void Start()
+    private void Start()
     {
-        _rBody = GetComponent<Rigidbody2D>(); 
+        _rBody = GetComponent<Rigidbody2D>();
+        _inputHandler.OnSpacePressed += Jump;
+        _inputHandler.HorizontalInput += Move;
     }
-
-    void Update()
+    
+    private void Jump()
     {
         _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        
-        float moveInput = Input.GetAxis(HorizontalAxisName);
-        _rBody.velocity = new Vector2(moveInput * moveSpeed, _rBody.velocity.y);
-        
-        if (_isGrounded && Input.GetButtonDown(JumpKeyName))
+        if (_isGrounded)
         {
             _rBody.velocity = new Vector2(_rBody.velocity.x, jumpForce);
         }
+    }
+
+    private void Move(float moveInput)
+    {
+        _rBody.velocity = new Vector2(moveInput * moveSpeed, _rBody.velocity.y);
+    }
+
+    private void OnDestroy()
+    {
+        _inputHandler.OnSpacePressed -= Jump;
+        _inputHandler.HorizontalInput -= Move;
     }
 }
