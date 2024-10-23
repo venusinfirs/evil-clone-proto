@@ -17,7 +17,6 @@
         public const int ActionDelay = 1000;
 
         public const string GroundCheckTag = "GroundCheck";
-        
         public const string EvilCloneTag = "EvilClone";
         public const string PlayerTag = "Character";
 

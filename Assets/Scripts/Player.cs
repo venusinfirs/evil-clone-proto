@@ -30,9 +30,9 @@ namespace DefaultNamespace
         
         private void MoveToSpawnPoint()
         {
-            StartSpeedUp().Forget();
+            DelayRespawn().Forget();
         }
-        private async UniTaskVoid StartSpeedUp()
+        private async UniTaskVoid DelayRespawn()
         {
             await UniTask.Delay(GameplayValues.PlayerRespawnDelay); 
             var pos = _spawnPoint.transform.position;
