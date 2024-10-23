@@ -4,7 +4,6 @@ using Zenject;
 
 namespace DefaultNamespace
 {
-    
     public class Player : Actor
     {
         [Inject] private SpawnPoint _spawnPoint;
@@ -35,7 +34,7 @@ namespace DefaultNamespace
         }
         private async UniTaskVoid StartSpeedUp()
         {
-            await UniTask.Delay(2); 
+            await UniTask.Delay(GameplayValues.PlayerRespawnDelay); 
             var pos = _spawnPoint.transform.position;
             transform.position = new Vector2(pos.x + GameplayValues.SpawnGap, pos.y); 
         }
