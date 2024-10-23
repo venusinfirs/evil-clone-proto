@@ -8,9 +8,7 @@ public class InputHandler : MonoBehaviour
     public event Action OnSpacePressed;
     public event Action OnCPressed;
     public event Action OnRPressed;
-    
     public event Action OnSpeedUpPressed;
-    
     public event Action<float> HorizontalInput;
 
     private const string HorizontalAxisName = "Horizontal";
