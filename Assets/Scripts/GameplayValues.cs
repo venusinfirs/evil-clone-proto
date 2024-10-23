@@ -11,9 +11,10 @@
 
         public const float JumpForce = 7f;      
         public const float GroundCheckRadius = 0.2f;
+        public const float PlayerSpawnShift = 0.5f;
         
         public const int GroundLayerMask = 64;
-        public const int PlayerRespawnDelay = 200;
+        public const int PlayerRespawnDelay = 300;
 
         public const string GroundCheckTag = "GroundCheck";
         

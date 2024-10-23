@@ -36,7 +36,7 @@ namespace DefaultNamespace
         {
             await UniTask.Delay(GameplayValues.PlayerRespawnDelay); 
             var pos = _spawnPoint.transform.position;
-            transform.position = new Vector2(pos.x + GameplayValues.SpawnGap, pos.y); 
+            transform.position = new Vector2(pos.x + GameplayValues.PlayerSpawnShift, pos.y + GameplayValues.PlayerSpawnShift); 
         }
 
         protected override void Jump()

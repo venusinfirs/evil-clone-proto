@@ -40,7 +40,7 @@ public class InputHandler : MonoBehaviour
             OnRPressed?.Invoke();
         }
         
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             OnSpeedUpPressed?.Invoke();
         }
