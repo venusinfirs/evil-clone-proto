@@ -1,3 +1,4 @@
+using System;
 using DefaultNamespace;
 using UnityEngine;
 using Zenject;
@@ -29,5 +30,10 @@ public class SpawnPoint : MonoBehaviour
 
         _lastSpawnedPosition = clone.transform.position;
         _clonesCount++;
+    }
+
+    private void OnDestroy()
+    {
+        _inputHandler.OnRPressed -= SpawnClone;
     }
 }

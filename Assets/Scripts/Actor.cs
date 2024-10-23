@@ -39,7 +39,7 @@ public class Actor : MonoBehaviour
         _rBody.velocity = new Vector2(moveInput * speed, _rBody.velocity.y);
     }
 
-    protected virtual void SpeedUp()
+    private void SpeedUp()
     {
         GameplayValues.SetSpeedIncreaseStatus(true);
         StartSpeedUp().Forget();
@@ -49,5 +49,10 @@ public class Actor : MonoBehaviour
     {
         await UniTask.Delay((int)GameplayValues.SpeedUpTime); 
         GameplayValues.SetSpeedIncreaseStatus(false);
+    }
+
+    private void OnDestroy()
+    {
+        InputHandler.OnSpeedUpPressed -= SpeedUp;
     }
 }
