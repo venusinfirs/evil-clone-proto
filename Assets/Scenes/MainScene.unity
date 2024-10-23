@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 605592531}
   - component: {fileID: 605592530}
   - component: {fileID: 605592533}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37216e4bba8186a4e85d7d75587f89fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clonePrefab: {fileID: 8523651203581336959, guid: afe3264010b96474da7c1ba79f9834ad, type: 3}
+  clonePrefab: {fileID: 6947435234587154883, guid: afe3264010b96474da7c1ba79f9834ad, type: 3}
 --- !u!1 &980165071
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,6 +712,10 @@ PrefabInstance:
     - target: {fileID: 2246851131207886637, guid: 538da42543f724148a7621a2a4b8f8c4, type: 3}
       propertyPath: m_Name
       value: MainCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493359360489853269, guid: 538da42543f724148a7621a2a4b8f8c4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

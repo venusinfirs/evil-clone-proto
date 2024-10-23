@@ -6,20 +6,20 @@ namespace DefaultNamespace
     
     public class Player : MonoBehaviour
     {
-        [SerializeField] private float moveSpeed = 5f;       
-        [SerializeField] private float jumpForce = 10f;      
-        [SerializeField] private Transform groundCheck;       
-        [SerializeField] private float groundCheckRadius = 0.2f;  
-        [SerializeField] private LayerMask groundLayer;
-        
         [Inject] private InputHandler _inputHandler;
         [Inject] private SpawnPoint _spawnPoint;
+        [Inject] private ReproduceActionService _reproService;
+
+        private Vector2 _currentPlayerPosition; 
         
+        private Transform groundCheck;  
         private Rigidbody2D _rBody;
         private bool _isGrounded;
         private void Start()
         {
             _rBody = GetComponent<Rigidbody2D>();
+            groundCheck = gameObject.transform.Find("GroundCheck");
+            _rBody.constraints = RigidbodyConstraints2D.FreezeRotation; 
             
             _inputHandler.OnSpacePressed += Jump;
             _inputHandler.HorizontalInput += Move;
@@ -32,19 +32,21 @@ namespace DefaultNamespace
             _inputHandler.HorizontalInput -= Move;
             _inputHandler.OnRPressed -= MoveToSpawnPoint;
         }
-        
+
         private void Jump()
         {
-            _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+            _isGrounded = Physics2D.OverlapCircle(groundCheck.position, GameplayValues.GroundCheckRadius, 64); 
             if (_isGrounded)
             {
-                _rBody.velocity = new Vector2(_rBody.velocity.x, jumpForce);
+                _rBody.velocity = new Vector2(_rBody.velocity.x, GameplayValues.JumpForce);
             }
+            _reproService.LogAction(ActionKind.Jump, null);
         }
 
         private void Move(float moveInput)
         {
-            _rBody.velocity = new Vector2(moveInput * moveSpeed, _rBody.velocity.y);
+            _rBody.velocity = new Vector2(moveInput * GameplayValues.MoveSpeed, _rBody.velocity.y);
+            _reproService.LogAction(ActionKind.Move, moveInput);
         }
 
         private void MoveToSpawnPoint()
