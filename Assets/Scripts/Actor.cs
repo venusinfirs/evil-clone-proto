@@ -29,14 +29,14 @@ public class Actor : MonoBehaviour
         _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, GameplayValues.GroundCheckRadius, GameplayValues.GroundLayerMask); 
         if (_isGrounded)
         {
-            _rBody.velocity = new Vector2(_rBody.velocity.x, GameplayValues.JumpForce);
+            _rBody.linearVelocity = new Vector2(_rBody.linearVelocity.x, GameplayValues.JumpForce);
         }
     }
 
     protected virtual void Move(float moveInput)
     {
         var speed = GameplayValues.IsSpeedIncreased ? GameplayValues.IncreasedMoveSpeed : GameplayValues.MoveSpeed;
-        _rBody.velocity = new Vector2(moveInput * speed, _rBody.velocity.y);
+        _rBody.linearVelocity = new Vector2(moveInput * speed, _rBody.linearVelocity.y);
     }
 
     private void SpeedUp()
