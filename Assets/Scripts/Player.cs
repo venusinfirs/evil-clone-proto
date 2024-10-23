@@ -10,8 +10,9 @@ namespace DefaultNamespace
         [Inject] private SpawnPoint _spawnPoint;
         [Inject] private ReproduceActionService _reproService;
 
-        private Vector2 _currentPlayerPosition; 
-      
+        private Vector2 _currentPlayerPosition;
+        private static readonly int Collision1 = Animator.StringToHash("Collision");
+
         protected override void Start()
         {
             base.Start();
@@ -30,7 +31,8 @@ namespace DefaultNamespace
         
         private void MoveToSpawnPoint()
         {
-            transform.position = _spawnPoint.transform.position; 
+            var pos = _spawnPoint.transform.position;
+            transform.position = new Vector2(pos.x + GameplayValues.SpawnGap, pos.y); 
         }
 
         protected override void Jump()
@@ -43,6 +45,14 @@ namespace DefaultNamespace
         {
             base.Move(moveInput);
             _reproService.LogAction(ActionKind.Move, moveInput);
+        }
+        
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag(GameplayValues.EvilCloneTag))
+            {
+                CollisionAnim.SetTrigger(Collision1);
+            }
         }
     }
 }

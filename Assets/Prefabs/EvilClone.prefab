@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1557894419535698570}
   - component: {fileID: 296227919498693911}
-  - component: {fileID: 5313495390460131600}
+  - component: {fileID: 682399084889852604}
   m_Layer: 0
   m_Name: OnCollision
   m_TagString: Untagged
@@ -85,22 +85,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!111 &5313495390460131600
-Animation:
+--- !u!95 &682399084889852604
+Animator:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3142318356181820414}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations:
-  - {fileID: 7400000, guid: 88909bc47ce05bc44be820b109939d8f, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eef223d94a3294242ac51caf025a3b96, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5201938288916714125
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,10 +150,9 @@ GameObject:
   - component: {fileID: 8410793510381221212}
   - component: {fileID: 8852804026377994896}
   - component: {fileID: 2831987686956853355}
-  - component: {fileID: 8523651203581336959}
   m_Layer: 7
   m_Name: EvilClone
-  m_TagString: Untagged
+  m_TagString: EvilClone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -293,7 +297,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.33725816}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -304,17 +308,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 1.6745158}
   m_EdgeRadius: 0
---- !u!114 &8523651203581336959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6947435234587154883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45aceb50a3b34332b02e1f02f6570b80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -4,7 +4,9 @@ using Zenject;
 
 public class Actor : MonoBehaviour
 {
-    private Transform groundCheck;  
+    protected Animator CollisionAnim;
+    
+    private Transform _groundCheck;  
     private Rigidbody2D _rBody;
     private bool _isGrounded;
     
@@ -13,13 +15,14 @@ public class Actor : MonoBehaviour
     protected virtual void Start()
     {
         _rBody = GetComponent<Rigidbody2D>();
-        groundCheck = gameObject.transform.Find("GroundCheck");
+        _groundCheck = gameObject.transform.Find(GameplayValues.GroundCheckTag);
+        CollisionAnim = gameObject.transform.GetComponentInChildren<Animator>();
         _rBody.constraints = RigidbodyConstraints2D.FreezeRotation; 
     }
 
     protected virtual void Jump()
     {
-        _isGrounded = Physics2D.OverlapCircle(groundCheck.position, GameplayValues.GroundCheckRadius, 64); 
+        _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, GameplayValues.GroundCheckRadius, 64); 
         if (_isGrounded)
         {
             _rBody.velocity = new Vector2(_rBody.velocity.x, GameplayValues.JumpForce);
@@ -30,4 +33,5 @@ public class Actor : MonoBehaviour
     {
         _rBody.velocity = new Vector2(moveInput * GameplayValues.MoveSpeed, _rBody.velocity.y);
     }
+    
 }
