@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 8410793510381221212}
   - component: {fileID: 8852804026377994896}
   - component: {fileID: 2831987686956853355}
+  - component: {fileID: 686049793076168745}
   m_Layer: 7
   m_Name: EvilClone
   m_TagString: EvilClone
@@ -236,7 +237,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_SortAtRoot: 0
 --- !u!50 &8852804026377994896
 Rigidbody2D:
@@ -310,3 +311,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.6745158}
   m_EdgeRadius: 0
+--- !u!95 &686049793076168745
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6947435234587154883}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eef223d94a3294242ac51caf025a3b96, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

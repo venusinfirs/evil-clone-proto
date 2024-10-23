@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 using Zenject;
 
 namespace DefaultNamespace
@@ -6,7 +7,6 @@ namespace DefaultNamespace
     
     public class Player : Actor
     {
-        [Inject] private InputHandler _inputHandler;
         [Inject] private SpawnPoint _spawnPoint;
         [Inject] private ReproduceActionService _reproService;
 
@@ -17,20 +17,25 @@ namespace DefaultNamespace
         {
             base.Start();
             
-            _inputHandler.OnSpacePressed += Jump;
-            _inputHandler.HorizontalInput += Move;
-            _inputHandler.OnRPressed += MoveToSpawnPoint;
+            InputHandler.OnSpacePressed += Jump;
+            InputHandler.HorizontalInput += Move;
+            InputHandler.OnRPressed += MoveToSpawnPoint;
         }
         
         private void OnDestroy()
         {
-            _inputHandler.OnSpacePressed -= Jump;
-            _inputHandler.HorizontalInput -= Move;
-            _inputHandler.OnRPressed -= MoveToSpawnPoint;
+            InputHandler.OnSpacePressed -= Jump;
+            InputHandler.HorizontalInput -= Move;
+            InputHandler.OnRPressed -= MoveToSpawnPoint;
         }
         
         private void MoveToSpawnPoint()
         {
+            StartSpeedUp().Forget();
+        }
+        private async UniTaskVoid StartSpeedUp()
+        {
+            await UniTask.Delay(2); 
             var pos = _spawnPoint.transform.position;
             transform.position = new Vector2(pos.x + GameplayValues.SpawnGap, pos.y); 
         }

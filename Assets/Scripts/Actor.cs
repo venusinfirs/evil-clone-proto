@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using UnityEngine;
 using Zenject;
@@ -9,20 +10,23 @@ public class Actor : MonoBehaviour
     private Transform _groundCheck;  
     private Rigidbody2D _rBody;
     private bool _isGrounded;
+    private bool _speedUp; 
     
-    [Inject] private ReproduceActionService _reproService;
+    [Inject] protected InputHandler InputHandler;
     
     protected virtual void Start()
     {
         _rBody = GetComponent<Rigidbody2D>();
         _groundCheck = gameObject.transform.Find(GameplayValues.GroundCheckTag);
         CollisionAnim = gameObject.transform.GetComponentInChildren<Animator>();
-        _rBody.constraints = RigidbodyConstraints2D.FreezeRotation; 
+        _rBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        InputHandler.OnSpeedUpPressed += SpeedUp;
     }
 
     protected virtual void Jump()
     {
-        _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, GameplayValues.GroundCheckRadius, 64); 
+        _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, GameplayValues.GroundCheckRadius, GameplayValues.GroundLayerMask); 
         if (_isGrounded)
         {
             _rBody.velocity = new Vector2(_rBody.velocity.x, GameplayValues.JumpForce);
@@ -31,7 +35,19 @@ public class Actor : MonoBehaviour
 
     protected virtual void Move(float moveInput)
     {
-        _rBody.velocity = new Vector2(moveInput * GameplayValues.MoveSpeed, _rBody.velocity.y);
+        var speed = GameplayValues.IsSpeedIncreased ? GameplayValues.IncreasedMoveSpeed : GameplayValues.MoveSpeed;
+        _rBody.velocity = new Vector2(moveInput * speed, _rBody.velocity.y);
     }
-    
+
+    protected virtual void SpeedUp()
+    {
+        GameplayValues.SetSpeedIncreaseStatus(true);
+        StartSpeedUp().Forget();
+    }
+
+    private async UniTaskVoid StartSpeedUp()
+    {
+        await UniTask.Delay((int)GameplayValues.SpeedUpTime); 
+        GameplayValues.SetSpeedIncreaseStatus(false);
+    }
 }

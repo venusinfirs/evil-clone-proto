@@ -10,7 +10,7 @@ namespace DefaultNamespace
         
         public void LogAction(ActionKind kind, float? axis)
         {
-            DelayActionReproduce(kind, axis);
+            DelayActionReproduce(kind, axis).Forget();
         }
 
         private async UniTaskVoid DelayActionReproduce(ActionKind kind, float? axis)
