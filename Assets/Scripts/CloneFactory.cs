@@ -1,19 +1,25 @@
 ﻿using UnityEngine;
+using Zenject;
 
 namespace DefaultNamespace
 {
     public class CloneFactory
     {
-        private readonly EvilClone _enemyPrefab; 
+        [Inject]
+        private DiContainer _container;
+       
+        private readonly GameObject _clonePrefab; 
 
-        public CloneFactory (EvilClone clonePrefab)
+        public CloneFactory (GameObject clonePrefab)
         {
-            _enemyPrefab = clonePrefab;
+            _clonePrefab = clonePrefab;
         }
 
-        public EvilClone CreateClone(Vector3 position)
+        public GameObject CreateClone(Vector3 position)
         {
-            return Object.Instantiate(_enemyPrefab, position, Quaternion.identity);
+            var instance = _container.InstantiatePrefab(_clonePrefab);
+            instance.transform.position = position;
+            return instance;
         }
     }
 }
