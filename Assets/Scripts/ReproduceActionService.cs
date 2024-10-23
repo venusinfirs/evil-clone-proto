@@ -14,7 +14,7 @@ namespace DefaultNamespace
         }
         private async UniTaskVoid DelayActionReproduce(ActionKind kind, float? axis)
         {
-            await UniTask.Delay((int)(GameplayValues.ActionDelay * 1000));
+            await UniTask.Delay(GameplayValues.ActionDelay);
             
                 switch (kind)
                 {

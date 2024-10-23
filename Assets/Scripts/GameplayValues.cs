@@ -2,7 +2,6 @@
 {
     public static class GameplayValues
     {
-        public const float ActionDelay = 1f;
         public const float SpawnGap = 0.05f;
         
         public const float MoveSpeed = 5f; 
@@ -15,6 +14,7 @@
         
         public const int GroundLayerMask = 64;
         public const int PlayerRespawnDelay = 300;
+        public const int ActionDelay = 1000;
 
         public const string GroundCheckTag = "GroundCheck";
         
