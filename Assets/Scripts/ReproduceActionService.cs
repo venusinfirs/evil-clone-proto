@@ -16,18 +16,17 @@ namespace DefaultNamespace
         {
             await UniTask.Delay(GameplayValues.ActionDelay);
             
-                switch (kind)
-                {
-                    case ActionKind.Jump:
-                        OnJump?.Invoke();
-                        break;
-                    case ActionKind.Move:
-                        OnMove?.Invoke(axis ?? 0f);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            
+            switch (kind)
+            {
+                case ActionKind.Jump:
+                    OnJump?.Invoke();
+                    break;
+                case ActionKind.Move:
+                    OnMove?.Invoke(axis ?? 0f);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

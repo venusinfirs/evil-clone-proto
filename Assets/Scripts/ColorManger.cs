@@ -10,8 +10,8 @@ public class ColorManger : MonoBehaviour
     {
         InputHandler.OnCPressed += SetRandomColor;
     }
-    
-    public void SetRandomColor()
+
+    private void SetRandomColor()
     {
         float r = Random.Range(0f, 1f);
         float g = Random.Range(0f, 1f);
