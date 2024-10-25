@@ -12,6 +12,7 @@ namespace DefaultNamespace
         private Vector2 _currentPlayerPosition;
         private static readonly int Collision1 = Animator.StringToHash("Collision");
         private float? _arrowInputStartTime; 
+       // private float? _jumpInputStartTime; 
 
         protected override void Start()
         {
@@ -44,7 +45,8 @@ namespace DefaultNamespace
         protected override void Jump()
         {
             base.Jump(); 
-          //  _reproService.LogAction(ActionKind.Jump, null);
+            
+            _reproService.LogAction(ActionKind.Jump, Time.time, null);
         }
 
         protected override void Move(float moveInput)

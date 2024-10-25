@@ -31,6 +31,8 @@ public class Actor : MonoBehaviour
         {
             _rBody.linearVelocity = new Vector2(_rBody.linearVelocity.x, GameplayValues.JumpForce);
         }
+
+        UnityEngine.Debug.Log("[Actor] Jump");
     }
 
     protected virtual void Move(float moveInput)

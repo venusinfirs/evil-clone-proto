@@ -56,9 +56,16 @@ namespace DefaultNamespace
             var elapsedTime = 0f;
             var duration = info.EndTime - info.StartTime;
             _previousActionEndTime = info.EndTime;
-            
+
+            if (duration <= 0)
+            {
+                Perform(info.Kind, info.Axis);
+                UnityEngine.Debug.Log("Zero duration perform");
+            }
+
             while (elapsedTime < duration)
             {
+                UnityEngine.Debug.Log("Non-zero duration perform");
                 Perform(info.Kind, info.Axis);
                 
                 await UniTask.WaitForEndOfFrame();
