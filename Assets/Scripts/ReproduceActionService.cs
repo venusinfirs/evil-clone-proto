@@ -18,7 +18,6 @@ namespace DefaultNamespace
         public void IncrementRespawnsCount()
         {
             CyclesCount++;
-            UnityEngine.Debug.Log($"Cycles count {CyclesCount}");
         }
 
         public void LogAction(ActionKind kind, float startTime, float? axis)
@@ -31,7 +30,7 @@ namespace DefaultNamespace
             
             actions.Enqueue(new ActionInfo(kind, startTime, Time.time, axis));
             
-           // UnityEngine.Debug.Log($"[ReproService] kind: {kind}, startTime {startTime}, endTime {Time.time}, axis {axis}");
+            UnityEngine.Debug.Log($"[ReproService] cycle {CyclesCount}, kind: {kind}, startTime {startTime}, endTime {Time.time}, axis {axis}");
         }
 
         public void ReproduceActions()
@@ -41,23 +40,23 @@ namespace DefaultNamespace
 
         private async UniTaskVoid ProcessActionsQueue(int cycleNum)
         {
-            UnityEngine.Debug.Log($"Execute queue for cycle num: {cycleNum}");
             if (!_actionCycles.TryGetValue(cycleNum, out var currentActions))
             {
                 return;
             }
-            
+
+            float? previousActionEndTime = null; 
             while (currentActions.Count > 0)
             {
                 try
                 {
                     var act = currentActions.Dequeue();
-                    if (_previousActionEndTime != null)
+                    if (previousActionEndTime != null)
                     {
-                        await DelayBetweenActions(act.StartTime - _previousActionEndTime.Value);
+                        await DelayBetweenActions(act.StartTime - previousActionEndTime.Value);
                     }
 
-                    await SimulateInput(act);
+                    previousActionEndTime = await SimulateInput(act);
                 }
                 catch (Exception e)
                 {
@@ -68,13 +67,14 @@ namespace DefaultNamespace
             if (currentActions.Count == 0)
             {
                 CycleEnded?.Invoke(cycleNum);
+                _actionCycles.Remove(cycleNum);
             }
         }
-        private async UniTask SimulateInput(ActionInfo info)
+        private async UniTask<float> SimulateInput(ActionInfo info)
         {
             var elapsedTime = 0f;
             var duration = info.EndTime - info.StartTime;
-            _previousActionEndTime = info.EndTime;
+            var previousActionEndTime = info.EndTime;
 
             if (duration <= 0)
             {
@@ -89,6 +89,7 @@ namespace DefaultNamespace
             }
             
             await UniTask.WaitForSeconds(duration);
+            return previousActionEndTime;
         }
 
         private async UniTask PerformEveryFrame(ActionInfo info)
@@ -99,7 +100,7 @@ namespace DefaultNamespace
 
         private async UniTask DelayBetweenActions(float delay)
         {
-            await UniTask.Delay((int)(delay * 1000));
+            await UniTask.Delay((int)(delay * GameplayValues.ActionDelay));
         }
         
         private void Perform(ActionKind kind, float? axis)

@@ -20,14 +20,14 @@ namespace DefaultNamespace
             InputHandler.OnSpacePressed += Jump;
             InputHandler.HorizontalInput += Move;
             InputHandler.OnHorizontalKeyUp += OnEndInput;
-           // InputHandler.OnRPressed += MoveToSpawnPoint;
+            InputHandler.OnRPressed += MoveToSpawnPoint;
         }
         
         private void OnDestroy()
         {
             InputHandler.OnSpacePressed -= Jump;
             InputHandler.HorizontalInput -= Move;
-           // InputHandler.OnRPressed -= MoveToSpawnPoint;
+            InputHandler.OnRPressed -= MoveToSpawnPoint;
         }
         
         private void MoveToSpawnPoint()
