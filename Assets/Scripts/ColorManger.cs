@@ -7,13 +7,11 @@ public class ColorManger : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer SpriteRenderer;
     [Inject] private InputHandler _inputHandler;
-    [Inject] private ReproduceActionService _reproduceService; 
     private string _tag;
 
     private void Start()
     {
         _inputHandler.OnCPressed += SetRandomColor;
-        _reproduceService.CycleEnded += SetCycleEndedColor;
         _tag = gameObject.tag;
     }
 
@@ -30,16 +28,6 @@ public class ColorManger : MonoBehaviour
 
         var randomColor = new Color(r, g, b);
         SpriteRenderer.material.color = randomColor;
-    }
-
-    private void SetCycleEndedColor(int num)
-    {
-        if (_tag != GameplayValues.EvilCloneTag)
-        {
-            return;
-        }
-        
-        SpriteRenderer.material.color = Color.gray;
     }
     
     private void OnDestroy()

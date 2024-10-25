@@ -9,7 +9,6 @@ namespace DefaultNamespace
     {
         public event Action OnJump;
         public event Action<float> OnMove;
-        public event Action<int> CycleEnded;
         public int CyclesCount { get; private set; }
         
         private Dictionary<int, Queue<ActionInfo>> _actionCycles = new Dictionary<int, Queue<ActionInfo>>();
@@ -60,12 +59,6 @@ namespace DefaultNamespace
                 {
                     UnityEngine.Debug.LogError(e.Message);
                 }
-            }
-
-            if (currentActions.Count == 0)
-            {
-                CycleEnded?.Invoke(cycleNum);
-                _actionCycles.Remove(cycleNum);
             }
         }
         private async UniTask<float> SimulateInput(ActionInfo info)

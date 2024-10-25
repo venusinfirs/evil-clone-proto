@@ -16,7 +16,6 @@ namespace DefaultNamespace
 
             _reproService.OnJump += Jump;
             _reproService.OnMove += Move;
-            _reproService.CycleEnded += OnCycleEnded;
             
             Perform().Forget();
         }
@@ -24,16 +23,6 @@ namespace DefaultNamespace
         {
             _reproService.OnJump -= Jump;
             _reproService.OnMove -= Move;
-            _reproService.CycleEnded -= OnCycleEnded;
-        }
-        
-        private void OnCycleEnded(int number)
-        {
-            if (_currentInstance == number)
-            {
-                _reproService.OnJump -= Jump;
-                _reproService.OnMove -= Move;
-            }
         }
         
         private void OnCollisionEnter2D(Collision2D collision)
@@ -48,7 +37,6 @@ namespace DefaultNamespace
         {
             await UniTask.Delay(500); 
             _reproService.ReproduceActions();
-            _currentInstance = _reproService.CyclesCount;
             _reproService.IncrementRespawnsCount();
         }
     }
