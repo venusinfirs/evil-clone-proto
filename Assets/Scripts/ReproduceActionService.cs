@@ -13,8 +13,6 @@ namespace DefaultNamespace
         public int CyclesCount { get; private set; }
         
         private Dictionary<int, Queue<ActionInfo>> _actionCycles = new Dictionary<int, Queue<ActionInfo>>();
-        
-        private float? _previousActionEndTime;
         public void IncrementRespawnsCount()
         {
             CyclesCount++;
