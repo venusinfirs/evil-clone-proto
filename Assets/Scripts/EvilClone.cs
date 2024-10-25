@@ -34,7 +34,7 @@ namespace DefaultNamespace
             _reproService.IncrementRespawnsCount();
         }
 
-        public void Stupify()
+        public void Stupefy()
         {
             _renderer.material.color = Color.gray;
         }
