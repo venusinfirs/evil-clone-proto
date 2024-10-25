@@ -1,5 +1,4 @@
-﻿using System;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
@@ -9,6 +8,7 @@ namespace DefaultNamespace
     {
         [Inject] private ReproduceActionService _reproService;
         private static readonly int Collision1 = Animator.StringToHash("Collision");
+        private int _currentInstance; 
 
         protected override void Start()
         {
@@ -16,6 +16,7 @@ namespace DefaultNamespace
 
             _reproService.OnJump += Jump;
             _reproService.OnMove += Move;
+            _reproService.CycleEnded += OnCycleEnded;
             
             Perform().Forget();
         }
@@ -23,6 +24,16 @@ namespace DefaultNamespace
         {
             _reproService.OnJump -= Jump;
             _reproService.OnMove -= Move;
+            _reproService.CycleEnded -= OnCycleEnded;
+        }
+        
+        private void OnCycleEnded(int number)
+        {
+            if (_currentInstance == number)
+            {
+                _reproService.OnJump -= Jump;
+                _reproService.OnMove -= Move;
+            }
         }
         
         private void OnCollisionEnter2D(Collision2D collision)
@@ -37,7 +48,8 @@ namespace DefaultNamespace
         {
             await UniTask.Delay(500); 
             _reproService.ReproduceActions();
+            _currentInstance = _reproService.CyclesCount;
+            _reproService.IncrementRespawnsCount();
         }
-
     }
 }

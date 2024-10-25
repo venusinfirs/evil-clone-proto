@@ -13,7 +13,7 @@ public class ColorManger : MonoBehaviour
     private void Start()
     {
         _inputHandler.OnCPressed += SetRandomColor;
-        _reproduceService.Stupify += SetStupifyColor;
+        _reproduceService.CycleEnded += SetCycleEndedColor;
         _tag = gameObject.tag;
     }
 
@@ -32,7 +32,7 @@ public class ColorManger : MonoBehaviour
         SpriteRenderer.material.color = randomColor;
     }
 
-    private void SetStupifyColor()
+    private void SetCycleEndedColor(int num)
     {
         if (_tag != GameplayValues.EvilCloneTag)
         {

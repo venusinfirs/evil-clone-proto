@@ -9,29 +9,49 @@ namespace DefaultNamespace
     {
         public event Action OnJump;
         public event Action<float> OnMove;
-
-        public Queue<ActionInfo> _actions = new Queue<ActionInfo>(); 
+        public event Action<int> CycleEnded;
+        public int CyclesCount { get; private set; }
+        
+        private Dictionary<int, Queue<ActionInfo>> _actionCycles = new Dictionary<int, Queue<ActionInfo>>();
         
         private float? _previousActionEndTime;
-        
+        public void IncrementRespawnsCount()
+        {
+            CyclesCount++;
+            UnityEngine.Debug.Log($"Cycles count {CyclesCount}");
+        }
+
         public void LogAction(ActionKind kind, float startTime, float? axis)
         {
-            _actions.Enqueue(new ActionInfo(kind, startTime, Time.time, axis));
-            UnityEngine.Debug.Log($"[ReproService] kind: {kind}, startTime {startTime}, endTime {Time.time}, axis {axis}");
+            if (!_actionCycles.TryGetValue(CyclesCount, out Queue<ActionInfo> actions))
+            {
+                actions = new Queue<ActionInfo>();
+                _actionCycles.Add(CyclesCount, actions);
+            }
+            
+            actions.Enqueue(new ActionInfo(kind, startTime, Time.time, axis));
+            
+           // UnityEngine.Debug.Log($"[ReproService] kind: {kind}, startTime {startTime}, endTime {Time.time}, axis {axis}");
         }
 
         public void ReproduceActions()
         {
-            ProcessActionsQueue().Forget();
+            ProcessActionsQueue(CyclesCount).Forget();
         }
 
-        private async UniTaskVoid ProcessActionsQueue()
+        private async UniTaskVoid ProcessActionsQueue(int cycleNum)
         {
-            while (_actions.Count > 0)
+            UnityEngine.Debug.Log($"Execute queue for cycle num: {cycleNum}");
+            if (!_actionCycles.TryGetValue(cycleNum, out var currentActions))
+            {
+                return;
+            }
+            
+            while (currentActions.Count > 0)
             {
                 try
                 {
-                    var act = _actions.Dequeue();
+                    var act = currentActions.Dequeue();
                     if (_previousActionEndTime != null)
                     {
                         await DelayBetweenActions(act.StartTime - _previousActionEndTime.Value);
@@ -43,6 +63,11 @@ namespace DefaultNamespace
                 {
                     UnityEngine.Debug.LogError(e.Message);
                 }
+            }
+
+            if (currentActions.Count == 0)
+            {
+                CycleEnded?.Invoke(cycleNum);
             }
         }
         private async UniTask SimulateInput(ActionInfo info)
@@ -79,7 +104,6 @@ namespace DefaultNamespace
         
         private void Perform(ActionKind kind, float? axis)
         {
-            UnityEngine.Debug.Log($"Perform action: {kind}, {axis}");
             switch (kind)
             {
                 case ActionKind.Jump:

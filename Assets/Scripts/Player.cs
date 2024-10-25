@@ -11,8 +11,7 @@ namespace DefaultNamespace
 
         private Vector2 _currentPlayerPosition;
         private static readonly int Collision1 = Animator.StringToHash("Collision");
-        private float? _arrowInputStartTime; 
-       // private float? _jumpInputStartTime; 
+        private float? _arrowInputStartTime;
 
         protected override void Start()
         {
@@ -21,7 +20,7 @@ namespace DefaultNamespace
             InputHandler.OnSpacePressed += Jump;
             InputHandler.HorizontalInput += Move;
             InputHandler.OnHorizontalKeyUp += OnEndInput;
-            // InputHandler.OnRPressed += MoveToSpawnPoint;
+           // InputHandler.OnRPressed += MoveToSpawnPoint;
         }
         
         private void OnDestroy()
