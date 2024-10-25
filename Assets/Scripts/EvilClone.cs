@@ -8,11 +8,13 @@ namespace DefaultNamespace
     {
         [Inject] private ReproduceActionService _reproService;
         private static readonly int Collision1 = Animator.StringToHash("Collision");
-        private int _currentInstance; 
+        private int _currentInstance;
+        private Renderer _renderer;
 
         protected override void Start()
         {
             base.Start();
+            _renderer = GetComponent<Renderer>();
             
             Perform().Forget();
         }
@@ -30,6 +32,11 @@ namespace DefaultNamespace
             await UniTask.Delay(500); 
             _reproService.ReproduceActions(this);
             _reproService.IncrementRespawnsCount();
+        }
+
+        public void Stupify()
+        {
+            _renderer.material.color = Color.gray;
         }
     }
 }

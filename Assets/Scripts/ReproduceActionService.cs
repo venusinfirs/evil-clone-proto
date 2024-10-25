@@ -61,7 +61,8 @@ namespace DefaultNamespace
                     UnityEngine.Debug.LogError(e.Message);
                 }
             }
-
+            
+            cloneActions.CloneInstance.Stupify();
             _cloneActions.Remove(cycleNum);
         }
         private async UniTask<float> SimulateInput(ActionInfo info)
