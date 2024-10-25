@@ -13,16 +13,8 @@ namespace DefaultNamespace
         protected override void Start()
         {
             base.Start();
-
-            _reproService.OnJump += Jump;
-            _reproService.OnMove += Move;
             
             Perform().Forget();
-        }
-        private void OnDestroy()
-        {
-            _reproService.OnJump -= Jump;
-            _reproService.OnMove -= Move;
         }
         
         private void OnCollisionEnter2D(Collision2D collision)
@@ -36,7 +28,7 @@ namespace DefaultNamespace
         private async UniTaskVoid Perform()
         {
             await UniTask.Delay(500); 
-            _reproService.ReproduceActions();
+            _reproService.ReproduceActions(this);
             _reproService.IncrementRespawnsCount();
         }
     }

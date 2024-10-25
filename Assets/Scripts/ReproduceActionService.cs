@@ -7,47 +7,48 @@ namespace DefaultNamespace
 {
     public class ReproduceActionService
     {
-        public event Action OnJump;
-        public event Action<float> OnMove;
-        public int CyclesCount { get; private set; }
+        private Dictionary<int, CloneActions> _cloneActions = new Dictionary<int, CloneActions>();
+        private int _cyclesCount;
         
-        private Dictionary<int, Queue<ActionInfo>> _actionCycles = new Dictionary<int, Queue<ActionInfo>>();
         public void IncrementRespawnsCount()
         {
-            CyclesCount++;
+            _cyclesCount++;
         }
 
         public void LogAction(ActionKind kind, float startTime, float? axis)
         {
-            if (!_actionCycles.TryGetValue(CyclesCount, out Queue<ActionInfo> actions))
+            if (!_cloneActions.TryGetValue(_cyclesCount, out CloneActions actions))
             {
-                actions = new Queue<ActionInfo>();
-                _actionCycles.Add(CyclesCount, actions);
+                actions = new CloneActions();
+                _cloneActions.Add(_cyclesCount, actions);
             }
             
-            actions.Enqueue(new ActionInfo(kind, startTime, Time.time, axis));
+            actions.SetAction(new ActionInfo(kind, startTime, Time.time, _cyclesCount, axis));
             
-            UnityEngine.Debug.Log($"[ReproService] cycle {CyclesCount}, kind: {kind}, startTime {startTime}, endTime {Time.time}, axis {axis}");
+           // UnityEngine.Debug.Log($"[ReproService] cycle {CyclesCount}, kind: {kind}, startTime {startTime}, endTime {Time.time}, axis {axis}");
         }
 
-        public void ReproduceActions()
+        public void ReproduceActions(EvilClone cloneInstance)
         {
-            ProcessActionsQueue(CyclesCount).Forget();
+            ProcessActionsQueue(_cyclesCount, cloneInstance).Forget();
         }
 
-        private async UniTaskVoid ProcessActionsQueue(int cycleNum)
+        private async UniTaskVoid ProcessActionsQueue(int cycleNum, EvilClone cloneInstance)
         {
-            if (!_actionCycles.TryGetValue(cycleNum, out var currentActions))
+            UnityEngine.Debug.Log($"[ReproService] ProcessActionsQueue {cycleNum}");
+            if (!_cloneActions.TryGetValue(cycleNum, out var cloneActions))
             {
                 return;
             }
+            
+            cloneActions.SetCloneInstance(cloneInstance);
 
             float? previousActionEndTime = null; 
-            while (currentActions.Count > 0)
+            while (cloneActions.ActionCycles.Count > 0)
             {
                 try
                 {
-                    var act = currentActions.Dequeue();
+                    var act = cloneActions.ActionCycles.Dequeue();
                     if (previousActionEndTime != null)
                     {
                         await DelayBetweenActions(act.StartTime - previousActionEndTime.Value);
@@ -61,7 +62,7 @@ namespace DefaultNamespace
                 }
             }
 
-            _actionCycles.Remove(cycleNum);
+            _cloneActions.Remove(cycleNum);
         }
         private async UniTask<float> SimulateInput(ActionInfo info)
         {
@@ -71,7 +72,7 @@ namespace DefaultNamespace
 
             if (duration <= 0)
             {
-                Perform(info.Kind, info.Axis);
+                Perform(info);
             }
 
             while (elapsedTime < duration)
@@ -87,7 +88,7 @@ namespace DefaultNamespace
 
         private async UniTask PerformEveryFrame(ActionInfo info)
         {
-            Perform(info.Kind, info.Axis);
+            Perform(info);
             await UniTask.WaitForEndOfFrame();
         }
 
@@ -97,15 +98,22 @@ namespace DefaultNamespace
             await UniTask.Delay(res > 0 ? res : 0);
         }
         
-        private void Perform(ActionKind kind, float? axis)
+        private void Perform(ActionInfo info)
         {
-            switch (kind)
+            var isInstance = _cloneActions.TryGetValue(info.Index, out var clone);
+           
+            if (!isInstance)
+            {
+                return;
+            }
+
+            switch (info.Kind)
             {
                 case ActionKind.Jump:
-                    OnJump?.Invoke();
+                    clone.CloneInstance.Jump();
                     break;
                 case ActionKind.Move:
-                    OnMove?.Invoke(axis ?? 0f);
+                    clone.CloneInstance.Move(info.Axis ?? 0f);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

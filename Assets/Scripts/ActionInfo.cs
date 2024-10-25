@@ -1,4 +1,6 @@
-﻿namespace DefaultNamespace
+﻿using JetBrains.Annotations;
+
+namespace DefaultNamespace
 {
     public class ActionInfo
     {
@@ -6,12 +8,14 @@
         public float StartTime;
         public float EndTime;
         public float? Axis;
-        public ActionInfo(ActionKind kind, float startTime, float endTime, float? axis = null)
+        public int Index; 
+        public ActionInfo(ActionKind kind, float startTime, float endTime, int index, float? axis = null)
         {
             Kind = kind;
             StartTime = startTime;
             EndTime = endTime;
             Axis = axis;
+            Index = index;
         }
     }
 }

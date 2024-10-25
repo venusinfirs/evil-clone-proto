@@ -24,7 +24,7 @@ public class Actor : MonoBehaviour
         InputHandler.OnSpeedUpPressed += SpeedUp;
     }
 
-    protected virtual void Jump()
+    public virtual void Jump()
     {
         _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, GameplayValues.GroundCheckRadius, GameplayValues.GroundLayerMask); 
         if (_isGrounded)
@@ -33,7 +33,7 @@ public class Actor : MonoBehaviour
         }
     }
 
-    protected virtual void Move(float moveInput)
+    public virtual void Move(float moveInput)
     {
         var speed = GameplayValues.IsSpeedIncreased ? GameplayValues.IncreasedMoveSpeed : GameplayValues.MoveSpeed;
         _rBody.linearVelocity = new Vector2(moveInput * speed, _rBody.linearVelocity.y);

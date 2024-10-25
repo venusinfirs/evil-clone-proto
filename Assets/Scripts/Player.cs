@@ -41,14 +41,14 @@ namespace DefaultNamespace
             transform.position = new Vector2(pos.x + GameplayValues.PlayerSpawnShift, pos.y + GameplayValues.PlayerSpawnShift); 
         }
 
-        protected override void Jump()
+        public override void Jump()
         {
             base.Jump(); 
             
             _reproService.LogAction(ActionKind.Jump, Time.time, null);
         }
 
-        protected override void Move(float moveInput)
+        public override void Move(float moveInput)
         {
             base.Move(moveInput);
             if (_arrowInputStartTime == null)
