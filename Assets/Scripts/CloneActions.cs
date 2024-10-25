@@ -4,17 +4,17 @@ namespace DefaultNamespace
 {
     public class CloneActions
     {
-        public Queue<ActionInfo> ActionCycles { get; private set; }
+        public Queue<ActionInfo> Actions { get; private set; }
         public EvilClone CloneInstance { get; private set; }
 
         public void SetAction(ActionInfo actionInfo)
         {
-            if (ActionCycles == null)
+            if (Actions == null)
             {
-                ActionCycles = new Queue<ActionInfo>();
+                Actions = new Queue<ActionInfo>();
             }
             
-            ActionCycles.Enqueue(actionInfo);
+            Actions.Enqueue(actionInfo);
         }
 
         public void SetCloneInstance(EvilClone clone)

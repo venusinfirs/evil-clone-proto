@@ -25,7 +25,7 @@ namespace DefaultNamespace
             
             actions.SetAction(new ActionInfo(kind, startTime, Time.time, _cyclesCount, axis));
             
-           // UnityEngine.Debug.Log($"[ReproService] cycle {CyclesCount}, kind: {kind}, startTime {startTime}, endTime {Time.time}, axis {axis}");
+            UnityEngine.Debug.Log($"[ReproService] cycle {_cyclesCount}, kind: {kind}, startTime {startTime}, endTime {Time.time}, axis {axis}");
         }
 
         public void ReproduceActions(EvilClone cloneInstance)
@@ -35,7 +35,6 @@ namespace DefaultNamespace
 
         private async UniTaskVoid ProcessActionsQueue(int cycleNum, EvilClone cloneInstance)
         {
-            UnityEngine.Debug.Log($"[ReproService] ProcessActionsQueue {cycleNum}");
             if (!_cloneActions.TryGetValue(cycleNum, out var cloneActions))
             {
                 return;
@@ -44,11 +43,11 @@ namespace DefaultNamespace
             cloneActions.SetCloneInstance(cloneInstance);
 
             float? previousActionEndTime = null; 
-            while (cloneActions.ActionCycles.Count > 0)
+            while (cloneActions.Actions.Count > 0)
             {
                 try
                 {
-                    var act = cloneActions.ActionCycles.Dequeue();
+                    var act = cloneActions.Actions.Dequeue();
                     if (previousActionEndTime != null)
                     {
                         await DelayBetweenActions(act.StartTime - previousActionEndTime.Value);
