@@ -100,7 +100,8 @@ namespace DefaultNamespace
 
         private async UniTask DelayBetweenActions(float delay)
         {
-            await UniTask.Delay((int)(delay * GameplayValues.ActionDelay));
+            var res = (int)(delay * GameplayValues.ActionDelay);
+            await UniTask.Delay(res > 0 ? res : 0);
         }
         
         private void Perform(ActionKind kind, float? axis)
