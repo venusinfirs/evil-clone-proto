@@ -60,6 +60,8 @@ namespace DefaultNamespace
                     UnityEngine.Debug.LogError(e.Message);
                 }
             }
+
+            _actionCycles.Remove(cycleNum);
         }
         private async UniTask<float> SimulateInput(ActionInfo info)
         {
