@@ -17,7 +17,7 @@ namespace DefaultNamespace
         public void LogAction(ActionKind kind, float startTime, float? axis)
         {
             _actions.Enqueue(new ActionInfo(kind, startTime, Time.time, axis));
-            UnityEngine.Debug.Log($"[ReproService] kind: {kind}, startTime {startTime}, endTime {Time.time}, axis {axis}");
+           // UnityEngine.Debug.Log($"[ReproService] kind: {kind}, startTime {startTime}, endTime {Time.time}, axis {axis}");
         }
 
         public void ReproduceActions()
@@ -45,36 +45,41 @@ namespace DefaultNamespace
                 }
             }
         }
+        private async UniTask SimulateInput(ActionInfo info)
+        {
+            var elapsedTime = 0f;
+            var duration = info.EndTime - info.StartTime;
+
+            if (duration <= 0)
+            {
+                Perform(info.Kind, info.Axis);
+            }
+
+            while (elapsedTime < duration)
+            {
+                await PerformEveryFrame(info);
+                
+                elapsedTime += Time.deltaTime;
+            }
+            
+            await UniTask.WaitForSeconds(duration);
+            _previousActionEndTime = info.EndTime;
+        }
+
+        private async UniTask PerformEveryFrame(ActionInfo info)
+        {
+            Perform(info.Kind, info.Axis);
+            await UniTask.WaitForEndOfFrame();
+        }
 
         private async UniTask DelayBetweenActions(float delay)
         {
             await UniTask.Delay((int)delay * 1000);
         }
-
-        private async UniTask SimulateInput(ActionInfo info)
-        {
-            var elapsedTime = 0f;
-            var duration = info.EndTime - info.StartTime;
-            _previousActionEndTime = info.EndTime;
-
-            if (duration <= 0)
-            {
-                Perform(info.Kind, info.Axis);
-                UnityEngine.Debug.Log("Zero duration perform");
-            }
-
-            while (elapsedTime < duration)
-            {
-                UnityEngine.Debug.Log("Non-zero duration perform");
-                Perform(info.Kind, info.Axis);
-                
-                await UniTask.WaitForEndOfFrame();
-                elapsedTime += Time.deltaTime;
-            }
-        }
-
+        
         private void Perform(ActionKind kind, float? axis)
         {
+            UnityEngine.Debug.Log($"Perform action: {kind}, {axis}");
             switch (kind)
             {
                 case ActionKind.Jump:
