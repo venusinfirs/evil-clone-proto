@@ -37,6 +37,8 @@ public class Actor : MonoBehaviour
     {
         var speed = GameplayValues.IsSpeedIncreased ? GameplayValues.IncreasedMoveSpeed : GameplayValues.MoveSpeed;
         _rBody.linearVelocity = new Vector2(moveInput * speed, _rBody.linearVelocity.y);
+        
+        //UnityEngine.Debug.Log($"Move input: {moveInput}, speed: {speed}");
     }
 
     private void SpeedUp()

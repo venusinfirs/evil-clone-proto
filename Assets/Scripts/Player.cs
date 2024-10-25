@@ -11,6 +11,7 @@ namespace DefaultNamespace
 
         private Vector2 _currentPlayerPosition;
         private static readonly int Collision1 = Animator.StringToHash("Collision");
+        private float? _arrowInputStartTime; 
 
         protected override void Start()
         {
@@ -18,14 +19,15 @@ namespace DefaultNamespace
             
             InputHandler.OnSpacePressed += Jump;
             InputHandler.HorizontalInput += Move;
-            InputHandler.OnRPressed += MoveToSpawnPoint;
+            InputHandler.OnHorizontalKeyUp += OnEndInput;
+            // InputHandler.OnRPressed += MoveToSpawnPoint;
         }
         
         private void OnDestroy()
         {
             InputHandler.OnSpacePressed -= Jump;
             InputHandler.HorizontalInput -= Move;
-            InputHandler.OnRPressed -= MoveToSpawnPoint;
+           // InputHandler.OnRPressed -= MoveToSpawnPoint;
         }
         
         private void MoveToSpawnPoint()
@@ -41,16 +43,25 @@ namespace DefaultNamespace
 
         protected override void Jump()
         {
-            base.Jump();
-            _reproService.LogAction(ActionKind.Jump, null);
+            base.Jump(); 
+          //  _reproService.LogAction(ActionKind.Jump, null);
         }
 
         protected override void Move(float moveInput)
         {
             base.Move(moveInput);
-            _reproService.LogAction(ActionKind.Move, moveInput);
+            if (_arrowInputStartTime == null)
+            {
+                _arrowInputStartTime = Time.time;
+            }
         }
-        
+
+        private void OnEndInput(float moveInput)
+        {
+            _reproService.LogAction(ActionKind.Move, _arrowInputStartTime ?? 0, moveInput);
+            _arrowInputStartTime = null;
+        }
+
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.CompareTag(GameplayValues.EvilCloneTag))

@@ -7,13 +7,14 @@ public class InputHandler : MonoBehaviour
     public event Action OnCPressed;
     public event Action OnRPressed;
     public event Action OnSpeedUpPressed;
+    public event Action<float> OnHorizontalKeyUp;
     public event Action<float> HorizontalInput;
 
     private const string HorizontalAxisName = "Horizontal";
 
     void Update()
     {
-        var moveInput = Input.GetAxis(HorizontalAxisName);
+        var moveInput = Input.GetAxisRaw(HorizontalAxisName);
 
         if (moveInput is > 0 or < 0)
         {
@@ -39,6 +40,16 @@ public class InputHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             OnSpeedUpPressed?.Invoke();
+        }
+        
+        if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            OnHorizontalKeyUp?.Invoke(1f);
+        }
+        
+        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            OnHorizontalKeyUp?.Invoke(-1f);
         }
     }
 }

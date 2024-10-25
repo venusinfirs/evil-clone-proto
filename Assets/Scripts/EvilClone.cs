@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
 using Zenject;
 
 namespace DefaultNamespace
@@ -14,9 +16,9 @@ namespace DefaultNamespace
 
             _reproService.OnJump += Jump;
             _reproService.OnMove += Move;
-
+            
+            Perform().Forget();
         }
-
         private void OnDestroy()
         {
             _reproService.OnJump -= Jump;
@@ -30,5 +32,12 @@ namespace DefaultNamespace
                 CollisionAnim.SetTrigger(Collision1);
             }
         }
+        
+        private async UniTaskVoid Perform()
+        {
+            await UniTask.Delay(500); 
+            _reproService.ReproduceActions();
+        }
+
     }
 }
